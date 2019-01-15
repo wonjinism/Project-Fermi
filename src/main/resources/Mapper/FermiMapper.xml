@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 게시판 처리 SQL -->
+<mapper namespace="io.zerone.fermi.DAO.FermiMapper">
+	<insert id="insertFermi" parameterType="Fermi">
+		INSERT INTO fermi_question
+		(
+			fermi_id
+			, fermi_title
+			, fermi_question
+			, fermi_regdate
+			, fermi_like
+		) VALUES (
+			fermi_seq.nextval
+			, #{fermi_title}
+			, #{fermi_question}
+			, SYSDATE
+			, 0
+		)
+	</insert>
+	
+	<select id="selectFermiList" resultType="Fermi">
+		SELECT 
+			fermi_id
+			, fermi_title
+			, fermi_question
+			, fermi_regdate
+			, fermi_like
+		FROM
+			fermi_question
+	</select>
+</mapper>
