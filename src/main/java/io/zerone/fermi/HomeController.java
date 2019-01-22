@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Handles requests for the application home page.
@@ -28,6 +29,11 @@ public class HomeController {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		return "home";
 	}
+
+	@RequestMapping(value = "/about", method= RequestMethod.GET)
+	public String about() {
+		return "home";
+	}
 	
 	@RequestMapping(value = "/register", method= RequestMethod.GET)
 	public void register() {
@@ -37,13 +43,8 @@ public class HomeController {
 	public void signin() {
 	}
 	
-	@RequestMapping(value = "/recent", method= RequestMethod.GET)
-	public String recent() {
-		return "fermi";
-	}
-	
-	@RequestMapping(value = "/archive", method= RequestMethod.GET)
-	public String archive() {
-		return "fermi";
+	@RequestMapping(value = "/problem", method= RequestMethod.GET)
+	public String problem() {
+		return "redirect:selectFermiList";
 	}
 }

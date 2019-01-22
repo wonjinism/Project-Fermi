@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+#button_wrap {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#button_wrap a {
+	display: inline-block;
+	margin: 10px;
+}
+
+#container {
+	width: 70%;
+	margin: 0 auto;
+	padding-top: 10px;
+}
+
+h2 {
+	text-align: center;
+}
+/* Bootstrap 수정 */
+.table>thead {
+	background-color: #b3c6ff;
+}
+
+.table>thead>tr>th {
+	text-align: center;
+}
+
+.table-hover>tbody>tr:hover {
+	background-color: #e6ecff;
+}
+
+.table>tbody>tr>td {
+	text-align: center;
+}

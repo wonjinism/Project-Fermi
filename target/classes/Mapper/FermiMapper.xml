@@ -22,7 +22,7 @@
 		)
 	</insert>
 	
-	<select id="selectFermiList" resultType="Fermi">
+	<select id="selectFermiList" resultType="Fermi" parameterType="string">
 		SELECT 
 			fermi_id
 			, fermi_title
@@ -31,5 +31,36 @@
 			, fermi_like
 		FROM
 			fermi_question
+		<if test="value != null">
+		WHERE
+			fermi_title LIKE '%'||#{value}||'%'
+		</if>
+		ORDER BY
+			fermi_id DESC
+
+	</select>
+	
+	<select id="selectFermi" parameterType="int" resultType="Fermi">
+		SELECT 
+			fermi_id
+			, fermi_title
+			, fermi_question
+			, fermi_regdate
+			, fermi_like
+		FROM
+			fermi_question
+		WHERE
+			fermi_id = #{fermi_id}
+	</select>
+	
+	<select id="countTotalPost" resultType="int" parameterType="string">
+		SELECT
+			COUNT(fermi_id)
+		FROM
+			fermi_question
+		<if test="value != null">
+		WHERE
+			fermi_title LIKE '%'||#{value}||'%'
+		</if>
 	</select>
 </mapper>

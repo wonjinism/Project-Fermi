@@ -38,7 +38,7 @@ public class UserController {
 //			if(user.getUser_id().equals("admin")) {
 //				return "admin";
 //			}
-			return "fermi";
+			return "redirect:selectFermiList";
 		}else if (result == 0) {
 			model.addAttribute("id_warning", "일치하는 아이디가 없습니다.");
 		}else if (result == 2) {

@@ -14,11 +14,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.zerone.fermi.DAO.FermiDAO;
 import io.zerone.fermi.VO.FermiQuestion;
+import io.zerone.fermi.util.PageNavigator;
 
 @Controller
 public class FermiController {
 	@Autowired
 	FermiDAO dao;
+	private static final int postPerPage = 5;
+	private static final int pagePerGroup = 3;
 
 	@RequestMapping(value = "/admin", method= RequestMethod.GET)
 	public String admin() {
@@ -31,29 +34,45 @@ public class FermiController {
 		System.out.println(fermi.getFermi_title()); //// 
 		System.out.println(fermi.getFermi_question()); ////
 		int result = dao.insertFermi(fermi);
-		ra.addAttribute("request", "archive");
 		return "redirect:selectFermiList";
 	}
 
 	// 리다이렉트 시 파라미터 받기
 	@RequestMapping(value = "/selectFermiList", method = RequestMethod.GET)
-	public String selectFermiList(@RequestParam(value = "request", defaultValue = "defalutValue") String request, HttpSession session, Model model) {
-		ArrayList<FermiQuestion> fermiList = dao.selectFermiList();
-		for (FermiQuestion fermiQuestion : fermiList) { ////
-			System.out.println(fermiQuestion.toString()); ////
-		} ////
+	public String selectFermiList(Model model, String search, @RequestParam(defaultValue="1") int currentPage) {
+		System.out.println(search); ////
+		int totalPost = dao.countTotalPost(search);
+		System.out.println(totalPost); ////
+		PageNavigator pn = new PageNavigator(postPerPage, pagePerGroup, currentPage, totalPost);
+		
+		ArrayList<FermiQuestion> fermiList = dao.selectFermiList(pn, postPerPage, search);
+		
 		model.addAttribute("fermiList", fermiList);
-
-		if (request.equals("recent")) {
-			model.addAttribute("request", "recent");
-		} else if (request.equals("archive")) {
-			model.addAttribute("request", "archive");
-		}
-		if (session.getAttribute("user_id").equals("admin")) {
-			System.out.println("여기로 갈 수 없는가? admin인데?"); ////
-			return "admin";
-		}
+		model.addAttribute("navi", pn);
+		model.addAttribute("search", search);
 		return "fermi";
+	}
+	
+	@RequestMapping(value = "/goPage", method = RequestMethod.GET)
+	public String goPage(int page, Model model, String search) {
+		int totalPost = dao.countTotalPost(search);
+		
+		PageNavigator pn = new PageNavigator(postPerPage, pagePerGroup, page, totalPost);
+		
+		ArrayList<FermiQuestion> fermiList = dao.selectFermiList(pn, postPerPage, search);
+		
+		model.addAttribute("fermiList", fermiList);
+		model.addAttribute("navi", pn);
+		model.addAttribute("search", search);
+		
+		return "fermi";
+	}
+	
+	@RequestMapping(value = "/fermiDetails", method = RequestMethod.GET)
+	public String fermiDetails(int fermi_id, Model model) {
+		FermiQuestion fermi = dao.selectFermi(fermi_id);
+		model.addAttribute("fermi", fermi);
+		return "details";
 	}
 
 	@RequestMapping(value = "/updateFermi", method = RequestMethod.GET)
@@ -63,7 +82,7 @@ public class FermiController {
 		if (session.getAttribute("user_id").equals("admin")) {
 
 		}
-		return "admin";
+		return "";
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
@@ -72,6 +91,9 @@ public class FermiController {
 		if (session.getAttribute("user_id").equals("admin")) {
 
 		}
-		return "admin";
+		return "";
 	}
+	
+	
+
 }
