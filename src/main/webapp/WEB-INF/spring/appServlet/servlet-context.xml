@@ -23,6 +23,16 @@
 	
 	<context:component-scan base-package="io.zerone.fermi" />
 	
+	<beans:bean id="loginInterceptor" class="io.zerone.fermi.Interceptor.LoginInterceptor"></beans:bean>
 	
+	<interceptors>
+		<interceptor>
+			<mapping path="/fermiDetails"/> 
+			<mapping path="/insertFermi"/>
+			<mapping path="/updateFermi"/>
+			<mapping path="/deleteFermi"/>
+			<beans:ref bean="loginInterceptor"/> <!-- 사용할 인터셉터   -->
+		</interceptor>
+	</interceptors>	
 	
 </beans:beans>

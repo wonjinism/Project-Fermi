@@ -35,14 +35,14 @@ public class PageNavigator {
 		currentPageInGroup = (this.currentPage-1)/pagePerGroup;
 		
 		// 현재 그룹 첫 페이지 = 현재 그룹 * (그룹당 페이지수+1)
-		startPageInGroup = currentPageInGroup * pagePerGroup + 1;
+		startPageInGroup = currentPageInGroup * (pagePerGroup + 1);
 		// 현재 그룹 첫 페이지 < 1 = 1
 		if(startPageInGroup < 1) {
 			startPageInGroup = 1;
 		}
 		
 		// 현재 그룹 끝 페이지 = 첫 페이지 + (그룹당 페이지수-1)	
-		endPageInGroup = startPageInGroup + pagePerGroup - 1;
+		endPageInGroup = startPageInGroup + (pagePerGroup - 1);
 		// 현재 그룹 끝 페이지 > 전체 페이지 = 전체 페이지
 		if(endPageInGroup > totalPage) {
 			endPageInGroup = totalPage;
